@@ -8,7 +8,7 @@ Help keep track of CTRE device configuration classes from season to season.
 2. Run unit tests with `gradlew test`.
 3. Tests will fail if any fields are added to configuration classes or if the default values have changed.
 
-You can also run the application with `gradlew run` to get a CSV list of all configuration fields and their default values.
+You can also run the application with `gradlew run  --quiet` to get a CSV list of all configuration fields and their default values.
 
 ## Classes Checked
 
