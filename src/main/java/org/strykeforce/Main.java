@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.can.BaseTalonConfiguration;
 import com.ctre.phoenix.motorcontrol.can.BaseTalonPIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
 
 public class Main {
@@ -61,5 +62,57 @@ public class Main {
       }
     }
 
+    // TalonFX
+
+    fields = TalonFXConfiguration.class.getDeclaredFields();
+    var talonFXConfiguration = new TalonFXConfiguration();
+
+    for (var field : fields) {
+      String name = field.getName();
+      Object value = talonFXConfiguration.getClass().getField(name).get(talonFXConfiguration);
+      System.out.println("TalonFXConfiguration," + name + "," + value);
+    }
+
+    fields = BaseTalonConfiguration.class.getDeclaredFields();
+    for (var field : fields) {
+      String name = field.getName();
+      Object value = talonFXConfiguration.getClass().getField(name).get(talonFXConfiguration);
+      if (value.getClass().getTypeName().equals(BaseTalonPIDSetConfiguration.class.getTypeName())) {
+        var pidConf = (BaseTalonPIDSetConfiguration) value;
+        System.out.println("TalonFXConfiguration," + name + ".selectedFeedbackSensor,"
+            + pidConf.selectedFeedbackSensor);
+        System.out.println("TalonFXConfiguration," + name + ".selectedFeedbackCoefficient,"
+            + pidConf.selectedFeedbackCoefficient);
+      } else {
+        System.out.println("TalonFXConfiguration," + name + "," + value);
+      }
+    }
+
+    fields = BaseMotorControllerConfiguration.class.getDeclaredFields();
+    for (var field : fields) {
+      String name = field.getName();
+      Object value = talonFXConfiguration.getClass().getField(name).get(talonFXConfiguration);
+      if (value.getClass().getTypeName().equals(SlotConfiguration.class.getTypeName())) {
+        var slotConf = (SlotConfiguration) value;
+        var pidFields = SlotConfiguration.class.getDeclaredFields();
+        for (var pidField : pidFields) {
+          Object pidValue = pidField.get(slotConf);
+          System.out
+              .println("TalonFXConfiguration," + name + "." + pidField.getName() + "," + pidValue);
+
+        }
+      } else if (value.getClass().getTypeName().equals(FilterConfiguration.class.getTypeName())) {
+        var filterConf = (FilterConfiguration) value;
+        var filterFields = FilterConfiguration.class.getDeclaredFields();
+        for (var filterField : filterFields) {
+          Object filterValue = filterField.get(filterConf);
+          System.out
+              .println("TalonFXConfiguration," + name + "." + filterField.getName() + ","
+                  + filterValue);
+        }
+      } else {
+        System.out.println("TalonFXConfiguration," + name + "," + value);
+      }
+    }
   }
 }
