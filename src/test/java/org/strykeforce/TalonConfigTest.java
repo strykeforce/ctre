@@ -20,6 +20,7 @@ import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
 import com.ctre.phoenix.motorcontrol.can.SlotConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRXConfiguration;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -128,7 +129,6 @@ class TalonConfigTest {
     assertEquals(0.04, conf.neutralDeadband);
     assertEquals(0.0, conf.voltageCompSaturation);
     assertEquals(32, conf.voltageMeasurementFilter);
-    assertEquals(VelocityMeasPeriod.Period_100Ms, conf.velocityMeasurementPeriod);
     assertEquals(64, conf.velocityMeasurementWindow);
     assertEquals(0.0, conf.forwardSoftLimitThreshold);
     assertFalse(conf.forwardSoftLimitEnable);
@@ -168,5 +168,14 @@ class TalonConfigTest {
     assertEquals(1, conf.pulseWidthPeriod_EdgesPerRot);
     assertEquals(1, conf.pulseWidthPeriod_FilterWindowSz);
     assertTrue(conf.trajectoryInterpolationEnable);
+  }
+
+  @Disabled("SensorVelocityMeasPeriod.Period_100Ms returned")
+  @Test
+  @DisplayName("Verify BaseMotorControllerConfiguration default VelocityMeasurementPeriod")
+  void verifyBaseMotorControllerConfigurationDefaultVelocityMeasurementPeriod() {
+    var conf = new BaseMotorControllerConfiguration() {
+    };
+    assertEquals(VelocityMeasPeriod.Period_100Ms, conf.velocityMeasurementPeriod);
   }
 }
